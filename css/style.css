@@ -1,0 +1,657 @@
+/* reset all values to default */
+/* #cl-module,
+#cl-module *:not(map *) {
+    all: initial;
+}
+ */
+@font-face {
+    font-family: 'Philharmonique';
+    src: url('../fonts/Philharmonique-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Philharmonique';
+    src: url('../fonts/Philharmonique-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('../fonts/SourceSansPro-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('../fonts/SourceSansPro-It.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('../fonts/SourceSansPro-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+:root {
+    --light-grey: #E6E6E6;
+    --deep-blue: #001B3B;
+    --deep-blue-fade: rgba(0,27,59,0.5);
+    --light-blue: #B3D6FD;
+    --hover-blue: #A9BED8;
+    --white: #ffffff;
+
+    /* Dynamic color changing depending on data */
+    --radio-type-background: var(--light-blue);
+    --radio-type-color: var(--deep-blue);
+}
+
+body{
+    max-width: 1200px;
+    width: 90vw;
+    margin: auto;
+    background-color: var(--light-grey);
+}
+
+/* Bandeau version interne */
+.internal-banner { 
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "Philharmonique";
+    color: white;
+    padding: 0.5rem 1rem;
+    background-color: #ff6a00;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.internal-banner svg {
+    vertical-align: middle;
+}
+/* ------------------------*/
+
+#cl-module h2, #cl-module h3{
+    font-family: "Philharmonique";
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#cl-module{
+    height: 95vh;
+    max-height: 900px;
+}
+#cl-module p, 
+#cl-module label, 
+#cl-module input{
+    font-family: 'Source Sans Pro';
+}
+#cl-module label{
+    font-size: 0.87em;
+    display: flex;
+    align-items: center;
+}
+#cl-module label p{
+    margin: 0;
+}
+/* ////////// CONTAINER LAYOUT ////////// */
+#mapDG-container{
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    justify-content: space-between;
+}
+
+/* ////////// MAP ////////// */
+
+#cl-module #mapDG{
+    width: 100%;
+    height: 80vh;
+    max-height: 800px;
+    display: block;
+    overflow: hidden;
+    border-radius: 16px;
+    transition: width 0.2s ease-in-out,  transform 0.2s ease-in-out;
+
+}
+#cl-module #mapDG .leaflet-tile-pane{
+    filter: saturate(0);
+}
+
+/* ////////// FILTERS OPEN BUTTON ////////// */
+#cl-module #open-close-filter{
+    position: absolute;
+    left: 0px;
+    z-index: 999;
+    bottom: 20px;
+    background-color: var(--white);
+    border: none;
+    border-radius: 0 16px 16px 0;
+    padding: 0.5em 1em 0.5em 0.5em;
+    transition: 0.2s ease-in-out left
+}
+#cl-module #mapDG-filter-container.open{
+    left: 0px;
+    transition: 0.2s ease-in-out left
+}
+
+#cl-module #open-close-filter.open{
+    left: 300px;
+    transition: 0.2s ease-in-out left
+}
+
+#cl-module #mapDG.open{
+    width: calc(100% - 320px);
+    transform: translateX(320px);
+    transition: width 0.2s ease-in-out,  transform 0.2s ease-in-out;
+}
+#cl-module #open-close-filter p::before{
+    content: url(../img/filters.svg);
+    display: block;
+    width: 20px;
+    margin: auto;
+}
+#cl-module #open-close-filter.open p::before{
+    content: url(../img/close.svg);
+}
+#cl-module #open-close-filter p{
+    font-size: 0.7em;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+}
+
+/* ////////// FILTERS ////////// */
+#cl-module #mapDG-filter-container{
+    width: 300px;
+    min-width: 300px;
+    background-color: var(--white);
+    border-radius: 16px;
+    padding: 1em;
+    position: absolute;
+    left: -300px;
+    transition: 0.2s ease-in-out left;
+    height: 80vh;
+    max-height: 800px;
+    box-sizing: border-box;
+}
+#cl-module #mapDG-filter-container.fullscreen-filters{
+    max-height: unset;
+    overflow-y: auto;
+    border-radius: 0 16px 16px 0;
+    position: absolute;
+    z-index: 99999;
+    bottom: 0;
+} 
+
+#cl-module #mapDG-filter-container #results,
+#cl-module #mapDG-filter-container h3{
+    margin: 0 0 1em 0;
+}
+#cl-module .filter-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#cl-module #search-bar,
+#cl-module fieldset{
+    border: none;
+    padding: 0;
+    margin: 0 0 1em 0;
+}
+#cl-module fieldset#statut_action div{
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 0.3em;
+}
+#cl-module fieldset > div input,
+#cl-module fieldset > div label{
+    cursor: pointer;
+}
+#cl-module #statut_action label{
+    position: relative;
+    bottom: 2px;
+}
+#cl-module fieldset > div input:disabled + label,
+#cl-module fieldset > div input:disabled + label svg,
+#cl-module fieldset > div input:disabled + label {
+    cursor: initial !important;
+    color: #ccc !important;
+    fill: #ccc !important;
+    stroke: #ccc !important;
+}
+#cl-module fieldset > div input:not(:checked) + label svg{
+    fill: #F2F2F2 !important; 
+    stroke: #666 !important; 
+    stroke-width:1px !important;
+}
+#cl-module fieldset > div input:not(:checked) + label svg:last-child{
+    display: none !important;
+}
+#cl-module #statut_action svg{
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin: 0 0 3px 12px;
+    vertical-align: middle;
+}
+
+#cl-module #search-field{
+    width: 100%;
+    display: flex;
+    margin-bottom: 2em;
+}
+#cl-module #seeker{
+    width: 90%;
+    padding: 0.5em 1em;
+    border-radius: 25px 0 0 25px;
+    border: 2px solid var(--deep-blue);
+}
+#cl-module #search{
+    width: 40px;
+    background-color: var(--deep-blue);
+    border-radius: 0 25px 25px 0;
+    border: 2px solid var(--deep-blue);
+    padding: 5px 7px 3px 3px;
+}
+#cl-module #type_action_container .btn.btn-default,
+#cl-module #service_action_container .btn.btn-default,
+#cl-module .btn.btn-default{
+    border: none;
+    background-color: var(--light-blue);
+    color: var(--deep-blue);
+    padding: 0.5em 1em;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+#cl-module #type_action_container .btn.btn-default:hover,
+#cl-module #service_action_container .btn.btn-default:hover,
+#cl-module .btn.btn-default:hover{
+    background-color: var(--hover-blue);
+}
+#cl-module #access-button::before{
+    content: url(../img/handicap.svg);
+    display: inline-block;
+    width: 20px;
+    vertical-align: middle;
+    margin: 0 5px 0 0;
+}
+
+/* ////////// SERVICE FILTER ////////// */
+#cl-module #service_action_container select,
+#cl-module #country_select{
+    width: 100%;
+    padding: 0.5em 1em;
+    border: 2px solid var(--deep-blue);
+    border-radius: 25px;
+    background-color: var(--white);
+    font-family: 'Source Sans Pro';
+    font-size: 0.9em;
+    color: var(--deep-blue);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23001B3B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1em center;
+    background-size: 1em;
+    padding-right: 3em;
+}
+#cl-module #service_action_container select option{
+    padding: 0.5em;
+    color: var(--deep-blue);
+    background-color: var(--white);
+}
+#cl-module #service_action_container select option:checked{
+    background-color: var(--light-blue);
+    color: var(--deep-blue);
+    font-weight: bold;
+}
+
+/* ////////// TYPES ACTIONS BUTTONs ////////// */
+#cl-module #type_action_container > div,
+#cl-module #service_action_container > div{
+    padding: 0.5em 1em 0.1em 0;
+    border-radius: 25px;
+    background-color: transparent;
+    transition: background-color 0.2s ease-in-out;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+#cl-module #type_action_container > div:first-child,
+#cl-module #service_action_container > div:first-child {
+    margin-bottom: 1em;
+}
+#cl-module #type_action_container .btn.btn-default,
+#cl-module #service_action_container .btn.btn-default {
+    width: fit-content;
+}
+#cl-module #type_action_container .btn.btn-default input,
+#cl-module #service_action_container .btn.btn-default input {
+    width: 0;
+}
+#cl-module #type_action_container input,
+#cl-module #service_action_container input {
+    appearance: none;
+    position: absolute;
+}
+#cl-module #type_action_container label,
+#cl-module #service_action_container label {
+    user-select: none;
+}
+#cl-module #type_action_container div[id^="iconType-"],
+#cl-module #service_action_container div[id^="iconType-"] {
+    position: relative;
+    height: 15px;
+    width: 15px;
+    margin-right: 5px;
+}
+#cl-module #type_action_container div[id^="iconType-"] svg,
+#cl-module #service_action_container div[id^="iconType-"] svg {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+}
+
+#cl-module #type_action_container div[id^="iconType-"] svg.checkIcon,
+#cl-module #service_action_container div[id^="iconType-"] svg.checkIcon {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    width: 8px;
+    height: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ////////// Reset Button ////////// */
+#cl-module #reset-button{
+    width: 34px;
+    height: 34px;
+    padding: 7px;
+    margin-top: 5px;
+    background-color: #fff;
+}
+#cl-module #reset-button:hover{
+    background-color: var(--light-grey);
+}
+
+/* ////////// Loader ////////// */
+.loader {
+    background: url(../img/loader.gif), #fff;
+    background-repeat: no-repeat;
+    background-position: 50%, 50%;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 16px;
+    opacity: 0.8;
+    z-index: 99999;
+}
+/* ////////// CLUSTER & ICON /////////// */
+#cl-module .marker-cluster-large,
+#cl-module .marker-cluster-medium,
+#cl-module .marker-cluster-small{
+    background-color: var(--deep-blue-fade);
+}
+#cl-module .marker-cluster-large div,
+#cl-module .marker-cluster-medium div,
+#cl-module .marker-cluster-small div{
+    background-color: var(--deep-blue);
+}
+#cl-module .marker-cluster div{
+    color: var(--white);
+}
+#cl-module .leaflet-div-icon{
+    background: none;
+    border: none;
+}
+#cl-module .leaflet-div-icon svg{
+    position: relative;
+    z-index: 1;
+}
+#cl-module .leaflet-div-icon .icon-shadow{
+    background-color: #000;
+    width: 30px;
+    height: 15px;
+    position: relative;
+    top: -17px;
+    border-radius: 100%;
+    filter: blur(5px);
+    opacity: 0.6;
+    z-index: 0;
+}
+/* ////////// MARKERS /////////// */
+#cl-module .leaflet-popup .prospect{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#cl-module .leaflet-popup .prospect svg{
+    width: 12px;
+    height: 12px;
+    padding: 3px;
+    border-radius: 15px;
+    margin-right: 5px;
+}
+#cl-module .leaflet-popup .prospect p{
+    margin: 0;
+}
+#cl-module .leaflet-popup .separator{
+    width: 70px;
+    height: 2px;
+    background-color: var(--deep-blue);
+    border-radius: 2px;
+    margin-top: 5px;
+}
+#cl-module .leaflet-container address,
+#cl-module .leaflet-container h4{
+    font-family: "Source Sans Pro";
+    margin: 0.5em 0;
+}
+#cl-module .leaflet-container h3{
+    font-family: "Philharmonique";
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0.5em 0;
+}
+#cl-module .leaflet-container address{
+    font-size: 1.2em;
+    font-style: normal;
+    margin-bottom: 1.5em;
+    /* font-weight: bold; */
+}
+#cl-module .leaflet-container h4{
+    font-size: 1.2em;
+    text-transform: unset;
+    margin: 0.5em 0;
+    font-weight: bold;
+}
+#cl-module a{
+    text-decoration: none;
+}
+#cl-module .leaflet-container p{
+    font-size: 1.2em;
+    margin: 0 0 0.5em 0;
+}
+
+/* ////////// ACCESSIBILITE TABLE ////////// */
+#access-modal {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 100001;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+#access-modal .close-button-container{
+    width: 90%;
+    margin: 1.5rem auto;
+    position: relative;
+    height: 48px;
+    display: block;
+}
+
+#cl-module #access-modal .close{
+    position: absolute;
+    padding: 16px;
+    right: 0;
+}
+
+#access-modal .table-container{
+    background-color: #fff;
+    width: 90%;
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 16px;
+    padding: 1em;
+    overflow-y: scroll;
+    height: calc(100vh - 20%);
+}
+
+#access-modal h2 {
+    text-align: center;
+}
+
+#access-modal table caption {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 0.5em;
+    text-align: center;
+}
+
+#access-modal table{
+    width: 100%;
+    font-family: 'Source Sans Pro';
+    margin: 1em auto;
+    border-collapse: collapse;
+    text-align: left;
+    border: 1px solid var(--deep-blue);
+}
+#access-modal th{
+    text-align: left;
+    padding: 0.5em;
+}
+#access-modal tr{
+    border: 1px solid var(--deep-blue);
+}
+#access-modal td{
+    padding: 0.5em;
+    vertical-align: middle;
+}
+#access-modal a{
+    color: var(--deep-blue);
+    text-decoration: underline;
+}
+/* ////////// CONTROLS ////////// */
+.leaflet-control-layers .leaflet-control-layers-toggle{
+    display: none;
+}
+/* ////////// RESPONSIVE ////////// */
+@media screen and (min-width : 1024px) {
+    #cl-module #mapDG-filter-container:not(.fullscreen-filters){
+        left: 0;
+        position: static;
+    }
+    #cl-module #mapDG:not(.fullscreen-filters) {
+        width: calc(100% - 320px);
+    }
+    /* Sur grand écran le panneau est toujours visible : on annule le décalage
+       de la carte laissé par le bouton "Filtres" (hors plein écran) */
+    #cl-module #mapDG.open:not(:fullscreen) {
+        transform: none;
+    }
+    #cl-module #open-close-filter:not(.fullscreen-filters){
+        display: none;
+    }
+    #cl-module #mapDG-filter-container.fullscreen-filters{
+        position: absolute;
+    } 
+}
+@media screen and (max-height:964px) {
+    #cl-module #mapDG-filter-container{
+        overflow-y: auto;
+    }
+}
+@media screen and (max-width:375px) {
+    #cl-module #open-close-filter.open {
+        left: 240px;
+    }
+}
+
+
+
+/* ////////// AMÉLIORATION ACCESSIBILITÉ FOCUS ////////// */
+
+/* Focus pour les labels des filtres de type d'action */
+#cl-module #type_action_container label:focus-visible {
+    outline: 3px dashed var(--light-blue);
+    outline-offset: 1px;
+    border-radius: 3px;
+}
+
+/* Focus pour le champ de recherche, bouton de recherche, select des services, bouton tableau */
+#cl-module #seeker:focus-visible,
+#cl-module #search:focus-visible,
+#cl-module #service_action_container select:focus-visible,
+#cl-module #country_select:focus-visible,
+#cl-module #city-suggestions li:focus-visible,
+#cl-module #access-button:focus-visible {
+    outline: 3px dashed var(--light-blue);
+    outline-offset: 1px;
+}
+
+/* ////////// CARTE PAD : PAYS & VILLE ////////// */
+#cl-module h3 label{
+    font-size: inherit;
+}
+#cl-module #search-field{
+    position: relative;
+}
+#cl-module #city-suggestions{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin: 4px 0 0 0;
+    padding: 0.3em 0;
+    list-style: none;
+    background-color: var(--white);
+    border: 2px solid var(--deep-blue);
+    border-radius: 16px;
+    max-height: 260px;
+    overflow-y: auto;
+    font-family: 'Source Sans Pro';
+    font-size: 0.9em;
+}
+#cl-module #city-suggestions li{
+    padding: 0.4em 1em;
+    cursor: pointer;
+    color: var(--deep-blue);
+}
+#cl-module #city-suggestions li small{
+    display: block;
+    color: var(--deep-blue-fade);
+}
+#cl-module #city-suggestions li:hover,
+#cl-module #city-suggestions li.active{
+    background-color: var(--hover-blue);
+}

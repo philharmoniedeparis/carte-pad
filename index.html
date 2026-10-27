@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Trouvez une institution abonnée près de chez vous</title>
+    </head>
+    <body>
+        <div id="page">
+
+            <!-- Begin Encart Module -->
+            <div id="cl-module">
+                <link rel="stylesheet" href="css/style.css">
+                <h2 class="map-title">Trouvez une institution abonnée près de chez vous</h2>
+                <section id="mapDG-container">
+                    <aside id="mapDG-filter-container">
+                        <div class="filter-header">
+                            <h3>Rechercher</h3>
+                            <p id="results"><b></b> Institution(s)</p>
+                        </div>
+
+                        <!-- Sélecteur de pays (rempli par map.js) -->
+                        <h3><label for="country_select">Pays</label></h3>
+                        <fieldset id="country_container">
+                            <select id="country_select" name="country"></select>
+                        </fieldset>
+
+                        <!-- Recherche de ville (France uniquement) -->
+                        <div id="city-search">
+                            <h3><label for="seeker">Ville</label></h3>
+                            <form class="search-bar" action="" id="search-bar" autocomplete="off">
+                                <div id="search-field">
+                                    <input type="text" id="seeker" placeholder="Nom de la ville..."
+                                           role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="city-suggestions" />
+                                    <button id="search" class="btn btn-default" type="submit" aria-label="Rechercher">
+                                        <img src="./img/search.svg" alt="Rechercher" loading="lazy" />
+                                    </button>
+                                    <ul id="city-suggestions" role="listbox" hidden></ul>
+                                </div>
+                            </form>
+                        </div>
+
+                        <h3>Filtrer par type d'institution</h3>
+                        <fieldset id="type_action_container">
+                            <!-- Généré dynamiquement par map.js -->
+                        </fieldset>
+
+                        <button role="button" id="access-button" class="btn btn-default">Liste des institutions</button>
+
+                    </aside>
+
+                    <button id="open-close-filter" type="button" aria-pressed="false">
+                        <p>Filtres</p>
+                    </button>
+
+                    <div id="mapDG" class="keep-style"></div>
+                    <div class="loader"></div>
+                </section>
+                <!-- Leaflet -->
+                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+                <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+                <!-- Fullscreen -->
+                <link rel="stylesheet" href="js/fullscreen/Control.FullScreen.css" />
+                <script src="js/fullscreen/Control.FullScreen.js"></script>
+
+                <!-- MarkerCluster -->
+                <script src="js/markerCluster/dist/leaflet.markercluster.js"></script>
+                <link rel="stylesheet" href="js/markerCluster/dist/MarkerCluster.css" />
+                <link rel="stylesheet" href="js/markerCluster/dist/MarkerCluster.Default.css" />
+
+                <!-- ResponsivePopup -->
+                <link rel="stylesheet" href="js/responsivePopup/leaflet.responsive.popup.css" />
+                <script src="js/responsivePopup/leaflet.responsive.popup.js"></script>
+
+                <!-- Script -->
+                <script src="js/map.js"></script>
+            </div>
+            <!-- END Encart Module -->
+        </div>
+    </body>
+</html>

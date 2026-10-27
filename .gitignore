@@ -1,0 +1,11 @@
+# Éditeurs / système
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Captures d'écran de test
+*.PNG
+*.png
+!img/**/*.png
